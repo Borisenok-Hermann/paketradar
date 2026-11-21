@@ -1,4 +1,4 @@
-const CACHE = 'pr-v1';
+const CACHE = 'pr-v2';
 const FILES = ['./', './index.html', './manifest.json', './icon-180.png', './icon-192.png', './icon-512.png',
   './fonts/archivo-latin-600-normal.woff2', './fonts/archivo-latin-800-normal.woff2',
   './fonts/ibm-plex-sans-latin-400-normal.woff2', './fonts/ibm-plex-sans-latin-500-normal.woff2',

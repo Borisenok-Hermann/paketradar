@@ -24,6 +24,10 @@ const CSP = [
 
 (async () => {
   let html = fs.readFileSync(src, 'utf8');
+  // Abruf-Server aus der Quelle übernehmen und nur diesen zusätzlich erlauben
+  const api = (html.match(/const TRACK_API = "([^"]*)"/) || [])[1];
+  let csp = CSP;
+  if (api) { const o = new URL(api).origin; if (!/^https:\/\//.test(o)) throw new Error('TRACK_API muss https sein'); csp = csp.replace("connect-src 'self'", `connect-src 'self' ${o}`); }
   let n = 0;
   html = html.replace(/<script>([\s\S]*?)<\/script>/g, (m, code) => {
     n++;
@@ -39,7 +43,7 @@ const CSP = [
     return '<script>' + BANNER + ob.replace(/<\/script/gi, '<\\/script') + '</script>';
   });
   html = await minify(html, { collapseWhitespace: true, conservativeCollapse: true, removeComments: true, minifyCSS: true, minifyJS: false, keepClosingSlash: true });
-  html = html.replace('<head>', `<head><!-- (c) 2026 Dennis Hermann. Paketradar. Alle Rechte vorbehalten. --><meta http-equiv="Content-Security-Policy" content="${CSP}">`);
+  html = html.replace('<head>', `<head><!-- (c) 2026 Dennis Hermann. Paketradar. Alle Rechte vorbehalten. --><meta http-equiv="Content-Security-Policy" content="${csp}">`);
   fs.writeFileSync(out, html);
   console.log(`ok: ${n} Skript(e), ${fs.statSync(src).size} -> ${fs.statSync(out).size} Bytes`);
 })().catch(e => { console.error(e); process.exit(1); });
