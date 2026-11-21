@@ -1,0 +1,9 @@
+{
+  "name": "paketradar-build",
+  "private": true,
+  "description": "Baut die veröffentlichte index.html aus quelle/index.html",
+  "dependencies": {
+    "html-minifier-terser": "^7.2.0",
+    "javascript-obfuscator": "^4.2.2"
+  }
+}
